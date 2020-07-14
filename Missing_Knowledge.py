@@ -181,12 +181,45 @@ def static_plot_the_data():
 		ax.plot(x, y, color=colors(i), linewidth=2.5)
 
 	# Add legend
-	labels = ['100 K', '200 K', '300 K', '400 K', '500 K', '600 K',
-	          '700 K', '800 K', '900 K', '1000 K']
-	ax.legend(labels, loc='upper right',
-	          frameon=False, labelspacing=0.2)
+	labels = ['100 K', '200 K', '300 K', '400 K', '500 K', '600 K', '700 K', '800 K', '900 K', '1000 K']
+	ax.legend(labels, loc='upper right', frameon=False, labelspacing=0.2)
+	# plt.show()
+
+
+def dynamic_plot_the_data():
+	import numpy as np
+	import matplotlib as mpl
+	import matplotlib.pyplot as plt
+	from matplotlib.animation import FuncAnimation
+	# Create figure and add axes
+	fig = plt.figure(figsize=(6, 4))
+	ax = fig.add_subplot(111)
+	# Create variable reference to plot
+	f_d, = ax.plot([], [], linewidth=2.5)
+	# Add text annotation and create variable reference
+	temp = ax.text(1, 1, '', ha='right', va='top', fontsize=24)
+	# Temperature values
+	T = np.linspace(100, 1000, 10)
+	# Animation function
+	def animate(i):
+		import numpy as np
+		import matplotlib as mpl
+		import matplotlib.pyplot as plt
+
+		colors = plt.get_cmap('coolwarm', 10)
+		x = np.linspace(0, 1, 100)
+		y = fermi(x, 0.5, T[i])
+		f_d.set_data(x, y)
+		f_d.set_color(colors(i))
+		temp.set_text(str(int(T[i])) + ' K')
+		temp.set_color(colors(i))
+
+	# Create animation
+	ani = FuncAnimation(fig=fig, func=animate, frames=range(len(T)), interval=500, repeat=True)
 	plt.show()
+
 
 # continue_or_break()
 # call_foo()
 # plot_the_data()
+dynamic_plot_the_data()
