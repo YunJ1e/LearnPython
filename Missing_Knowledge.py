@@ -95,6 +95,29 @@ def print_all_nodes(headNode):
 		headNode = headNode.next
 	print("None")
 
+def search_and_delete(headNode, target):
+
+	current = ListNode(-1)
+	fakeHead = current
+
+	while headNode is not None:
+		if headNode.val == target:
+			# print("111")
+			current.next = headNode.next
+			headNode = headNode.next
+		else:
+			current.next = headNode
+			current = current.next
+			# print(current.val)
+			headNode = headNode.next
+
+	return fakeHead.next
+
+head = ListNode(1)
+head.next = ListNode(3)
+head.next.next = ListNode(4)
+
+print_all_nodes(search_and_delete(head, 1))
 
 def merge_two_sorted_llist(headOne, headTwo):
 	# Handle the corner cases, if one of them is empty, return the other(regardless empty or not)
@@ -222,4 +245,4 @@ def dynamic_plot_the_data():
 # continue_or_break()
 # call_foo()
 # plot_the_data()
-dynamic_plot_the_data()
+# dynamic_plot_the_data()
