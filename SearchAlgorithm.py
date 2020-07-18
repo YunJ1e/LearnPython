@@ -175,6 +175,7 @@ def binary_search_closet_number(numList, target):
 			return mid
 	# Even the one last number is not the number we want, the target must not be in the number list
 	return left if(abs(numList[left]-target) <= abs(numList[right]-target)) else right
+	# return right
 
 def binary_search_last_occurence(numList, target):
 	# If the number list is empty, return None representing (NOT FOUND)
@@ -235,8 +236,8 @@ def my_custom_random():
 	randInt = random.randrange(-100,100)
 	return my_custom_random() if randInt in exclude else randInt
 
-# Test
-for j in range(100):
-	testList = sorted(my_custom_random() for i in range(100))
-	# print(testList)
-	print(binarySearch(testList, random.randrange(-200, 200)))
+# # Test
+# for j in range(100):
+# 	testList = sorted(my_custom_random() for i in range(100))
+# 	# print(testList)
+# 	print(binarySearch(testList, random.randrange(-200, 200)))

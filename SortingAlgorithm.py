@@ -2,7 +2,8 @@
 Updated: 2020/07/15
 Author: Yunjie Wang
 """
-import random
+
+import SearchAlgorithm
 
 def bubble_sort(list_to_sort):
 	if not list_to_sort or len(list_to_sort) == 0:
@@ -85,8 +86,31 @@ def insertion_sort_in_place(list_to_sort):
 		# The while loop is out, the proper position is found
 		list_to_sort[k] = current_value
 
+def search_and_insertion(list_to_insert, num_insert):
+	# Assume the list_to_insert is a sorted list
+	insert_postion = SearchAlgorithm.binary_search_closet_number(list_to_insert, num_insert)
 
-a = [random.randrange(0,2000) for i in range(500)]
-print(a)
-insertion_sort_in_place(a)
-print(a)
+	# The value of the insert position could be less or greater than the num_insert
+	# list_to_insert is empty at first
+	if len(list_to_insert) == 0:
+		list_to_insert.append(num_insert)
+		return
+	if list_to_insert[insert_postion] < num_insert:
+		insert_postion += 1
+
+	idx = len(list_to_insert)
+	list_to_insert.append(num_insert)
+
+	while idx > insert_postion:
+		# list_to_insert[idx], list_to_insert[idx-1] = list_to_insert[idx-1], list_to_insert[idx]
+		list_to_insert[idx]=list_to_insert[idx - 1] # Alternative
+		idx -= 1
+	list_to_insert[insert_postion] = num_insert
+
+def binary_search_help_insertion(list_to_sort):
+	new_list = []
+	for i in range(len(list_to_sort)):
+		print(new_list)
+		search_and_insertion(new_list, list_to_sort[i])
+	print(new_list)
+	return new_list
