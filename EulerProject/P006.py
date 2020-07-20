@@ -32,4 +32,5 @@ def difference(n):
 	"""
 	return - sum_of_square(n) + sum_of_first_n(n)**2
 
-# print(difference(100))
+def func006():
+	print(difference(100))

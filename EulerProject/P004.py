@@ -39,4 +39,6 @@ def max_palindrome_product(ndigit):
 			if mirror_result == product_result and product_result > result:
 				result = product_result
 	return result
-# print(max_palindrome_product(3))
+
+def func004():
+	print(max_palindrome_product(3))

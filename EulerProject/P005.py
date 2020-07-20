@@ -16,4 +16,6 @@ def least_comment_multiplier(n):
 	for i in range(1, n+1):
 		result = int(result * i / math.gcd(result, i))
 	return result
-# print(least_comment_multiplier(20))
+
+def func005():
+	print(least_comment_multiplier(20))

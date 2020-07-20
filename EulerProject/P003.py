@@ -33,4 +33,6 @@ def max_prime_factor(num):
 		max_prime = num
 
 	return max_prime
-# print(max_prime_factor(600851475143))
+
+def func003():
+	print(max_prime_factor(600851475143))
