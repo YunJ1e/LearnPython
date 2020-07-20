@@ -5,10 +5,12 @@ Updated: 2020/07/19
 Author: Yunjie Wang
 """
 
-import math
 """
 Problem 2 (4613732)
 """
+
+import math
+
 def func002():
 	upper_limit = 4000000
 	x = 1

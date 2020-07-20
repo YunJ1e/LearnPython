@@ -5,10 +5,12 @@ Updated: 2020/07/19
 Author: Yunjie Wang
 """
 
-import math
 """
 Problem 3 (6857)
 """
+
+import math
+
 def max_prime_factor(num):
 	max_prime = -1
 	# The largest possible factor

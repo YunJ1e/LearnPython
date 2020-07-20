@@ -5,10 +5,12 @@ Updated: 2020/07/19
 Author: Yunjie Wang
 """
 
-import math
 """
 Problem 4 (906609)
 """
+
+import math
+
 def number_list(num):
 	digit_list = []
 	while num != 0:
