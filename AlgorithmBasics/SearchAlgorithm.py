@@ -175,7 +175,6 @@ def binary_search_closet_number(numList, target):
 			return mid
 	# Even the one last number is not the number we want, the target must not be in the number list
 	return left if(abs(numList[left]-target) <= abs(numList[right]-target)) else right
-	# return right
 
 def binary_search_last_occurence(numList, target):
 	# If the number list is empty, return None representing (NOT FOUND)
@@ -236,8 +235,73 @@ def my_custom_random():
 	randInt = random.randrange(-100,100)
 	return my_custom_random() if randInt in exclude else randInt
 
+def merge_two_lists(list1, list2):
+	"""
+	:param list1,2 : Sorted lists
+	:return: A sorted list
+	"""
+	new_list = []
+	i = 0
+	j = 0
+	while i < len(list1) and j < len(list2):
+		if list1[i] < list2[j]:
+			new_list.append(list1[i])
+			i += 1
+		else:
+			new_list.append(list2[j])
+			j += 1
+	# The length of two lists might not be the same
+	# At most one line from the following two will have actual effect on the new_list
+	while i < len(list1):
+		new_list.append(list1[i])
+		i += 1
+	while j < len(list2):
+		new_list.append(list2[j])
+		j += 1
+	return new_list
+
+def merge_sort(list_to_sort):
+	if len(list_to_sort) == 0 or len(list_to_sort) == 1:
+		return list_to_sort
+	mid = (len(list_to_sort) + 1) // 2
+	left = merge_sort(list_to_sort[:mid])
+	right = merge_sort(list_to_sort[mid:])
+	return merge_two_lists(left, right)
+
+def partition(alist, start, end, pivot_index):
+	# In this list, every element before the pivot_index is less than the number on it,
+	# every element after the pivot_index is greater than the number on it.
+
+	# Swap the number on the pivot index and the last number of the list
+	alist[pivot_index] , alist[end] = alist[end] , alist[pivot_index]
+	small_index = start
+	for i in range(start, end):
+		if alist[i] < alist[end]:
+			alist[i], alist[small_index] = alist[small_index], alist[i]
+			small_index += 1
+	alist[small_index], alist[end] = alist[end], alist[small_index]
+	return small_index
+
+def quick_sort_helper(alist, start, end):
+	if start >= end:
+		return
+	random_num = random.randrange(start, end + 1)
+	pivot_index = partition(alist, start, end, random_num)
+	quick_sort_helper(alist, start, pivot_index - 1)
+	quick_sort_helper(alist, pivot_index + 1, end)
+
+def quick_sort(list_to_sort):
+	quick_sort_helper(list_to_sort, 0, len(list_to_sort) - 1)
+
+# a = [28, 1, -1 ,5]
+# quick_sort(a)
+# print(a)
+
 # # Test
 # for j in range(100):
 # 	testList = sorted(my_custom_random() for i in range(100))
 # 	# print(testList)
 # 	print(binarySearch(testList, random.randrange(-200, 200)))
+# alist = [2,1,0,3,-1,5,1,5,6,8,9,1,7]
+# new_list = merge_sort(alist)
+# print(new_list)
