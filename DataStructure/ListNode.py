@@ -23,6 +23,20 @@ class ListNode(object):
 	def __str__(self):
 		return "Node value: {}".format(self.value)
 
+def reverse_llist(head):
+	if not head:
+		return None
+	current = head
+	pre = None
+
+	while current.next is not None:
+		next_node = current.next
+		current.next = pre
+		pre = current
+		current = next_node
+	current.next = pre
+	return current
+
 def llist_random_generator(list_length):
 	if list_length <= 0:
 		return
@@ -142,3 +156,7 @@ def remove_from_index(headNode, index_to_remove):
 	remove_pos.next = None
 	return fake_head.next
 
+a = llist_random_generator()
+traverse(a)
+b = reverse_llist(a)
+traverse(b)
