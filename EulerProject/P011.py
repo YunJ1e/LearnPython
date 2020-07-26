@@ -34,19 +34,24 @@ def convert_to_matrix(matrix_string, x_size, y_size):
 	return aMatrix
 
 def pro_matrix(matrix, window=4):
+
 	max_val = -1
 	max_expr = ""
 	row, col = len(matrix), len(matrix[0])
+	# newMatrix = []
 	for i in range(row):
+		# newMatrix.append([])
 		for j in range(col):
 			val, expr = max(product(matrix, i, j, 1, 0, window), product(matrix, i, j, 0, 1, window),
 			                        product(matrix, i, j, -1, 0, window), product(matrix, i, j, 0, -1, window),
 			                        product(matrix, i, j, 1, 1, window), product(matrix, i, j, 1, -1, window),
 			                        product(matrix, i, j, -1, 1, window), product(matrix, i, j, -1, -1, window)
 			                        )
+			# newMatrix[i].append(val)
 			if val > max_val:
 				max_val = val
 				max_expr = expr
+	# print(newMatrix)
 	return max_val, max_expr
 
 def get_number(matrix_input, x_index, y_index):
