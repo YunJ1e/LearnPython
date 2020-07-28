@@ -280,7 +280,7 @@ class min_stack(object):
 		return : int
 		"""
 
-def eval_reverse_polish_notation():
+def eval_reverse_polish_notation(expr_list):
 	# Evaluate the value of an arithmetic expression in Reverse Polish Notation.
 	# Assumption:
 	# Valid operators are +, -, *, /. Each operand may be an integer or another expression.
@@ -288,4 +288,15 @@ def eval_reverse_polish_notation():
 	# Examples:
 	# ["2", "1", "+", "3", "*"] -> ((2 + 1) * 3) -> 9
 	# ["4", "13", "5", "/", "+"] -> (4 + (13 / 5)) -> 6
-	pass
+	operator_dict = {"+": operator.add, "-": operator.sub, "*": operator.mul, "/": operator.truediv}
+	operands = []
+	for element in expr_list:
+		if element in operator_dict.keys():
+			right_num, left_num = operands.pop(), operands.pop()
+			res = operator_dict[element](left_num, right_num)
+			operands.append(res)
+		else:
+			operands.append(int(element))
+	return int(operands[0])
+# eval_reverse_polish_notation(["4", "13", "5", "/", "+"])
+
