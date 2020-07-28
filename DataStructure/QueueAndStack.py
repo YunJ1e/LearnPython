@@ -234,4 +234,58 @@ def arithmetic_expression_eval(terms):
 			operands.append(int(letter))
 	return operands.pop()
 
-print(arithmetic_expression_eval("(1+(2/3))"))
+# print(arithmetic_expression_eval("(1+(2/3))"))
+
+class min_stack(object):
+
+	def __init__(self):
+		"""
+		initialize your data structure here.
+		"""
+		self._items = []
+		self._min = []
+
+	def __len__(self):
+		return len(self._items)
+
+	def is_empty(self):
+		return self.__len__() == 0
+
+	def push(self, x):
+		"""
+		input : int x
+		return :
+		"""
+		if self.is_empty():
+			self._items = [x]
+			self._min = x
+		else:
+			self._items.append(x)
+			if x < self._min:
+				self._min = x
+
+
+	def pop(self):
+		"""
+		return : int
+		"""
+
+	def top(self):
+		"""
+		return : int
+		"""
+
+	def min(self):
+		"""
+		return : int
+		"""
+
+def eval_reverse_polish_notation():
+	# Evaluate the value of an arithmetic expression in Reverse Polish Notation.
+	# Assumption:
+	# Valid operators are +, -, *, /. Each operand may be an integer or another expression.
+	#
+	# Examples:
+	# ["2", "1", "+", "3", "*"] -> ((2 + 1) * 3) -> 9
+	# ["4", "13", "5", "/", "+"] -> (4 + (13 / 5)) -> 6
+	pass
