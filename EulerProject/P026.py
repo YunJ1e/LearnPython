@@ -6,24 +6,24 @@ Author: Yunjie Wang
 """
 
 """
-Problem 26 ()
+Problem 26 (982)
 """
 import itertools
 
-def compute():
-	ans = reciprocal_cycle_len(4)
-	return str(ans)
-
-
-def reciprocal_cycle_len(n):
+def pattern(n):
 	seen = {}
 	x = 1
 	for i in itertools.count():
-
 		if x in seen:
 			return i - seen[x]
 		else:
-			print(x)
 			seen[x] = i
 			x = x * 10 % n
-print(compute())
+
+def func026():
+	max_len = 0
+	for i in range(1, 1001):
+		max_len = max(max_len, pattern(i))
+	print(max_len)
+
+func026()
