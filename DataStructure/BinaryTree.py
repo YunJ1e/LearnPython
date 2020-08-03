@@ -80,12 +80,15 @@ class Binary_Tree(object):
 					curr = next
 					next = []
 
-
-
-
-
-
-
+	def upside_down(self):
+		# Given a binary tree where all the right nodes are either leaf nodes with a sibling or empty
+		# flip upside down and the original right node is left node right now
+		# 	     1                         4
+		# 	   / \             	         / \
+		#     2  3                      5  2
+		# 	/ \                           / \
+		#  4  5                          3  1
+		pass
 a = Binary_Tree()
 a.random_tree()
 a.pre_order_traverse()
