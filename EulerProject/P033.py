@@ -6,7 +6,7 @@ Author: Yunjie Wang
 """
 
 """
-Problem 33 ()
+Problem 33 (100)
 """
 
 def num_check(num, den):
