@@ -11,14 +11,14 @@ class _TreeNode(object):
 		self.right_total = 0
 
 def random_tree():
-	root = _TreeNode(1)
-	root.left = _TreeNode(3)
-	root.right = _TreeNode(4)
-	root.left.left = _TreeNode(5)
-	root.left.right = _TreeNode(6)
+	root = _TreeNode(10)
+	root.left = _TreeNode(5)
+	root.right = _TreeNode(15)
+	root.left.left = _TreeNode(2)
+	root.left.right = _TreeNode(7)
 	# root.left.right.left = _TreeNode(999)
-	root.right.left = _TreeNode(5)
-	root.right.right = _TreeNode(8)
+	root.right.left = _TreeNode(12)
+	root.right.right = _TreeNode(20)
 	return root
 
 def pre_order_iter(root):
@@ -184,11 +184,31 @@ def num_of_right_node(curr_node):
 	curr_node.right_total = right
 	return 1 + left + right
 
-def is_BST_1_helper(root):
-	pass
-def is_BST_1(root):
-	pass
+def is_BST_1_helper(root, prev):
+	if not root:
+		return True
+	if not is_BST_1_helper(root.left, prev):
+		return False
+	if prev[0] >= root.value:
+		return False
+	prev[0] = root.value
+	return is_BST_1_helper(root.right, prev)
 
+def is_BST_1(root):
+	prev = [-float("inf")]
+	return is_BST_1_helper(root, prev)
+
+def is_BST_2_helper(root):
+	if not root:
+		return True, None, None
+	lr, lmin, lmax = is_BST_2_helper(root.left)
+	rr, rmin, rmax = is_BST_2_helper(root.right)
+	return lr and rr and (not lmax or lmax < root.value) and (not rmin or rmin > root.value), \
+		lmin or root.value, \
+		rmax or root.value
+
+def is_BST_2(root):
+	return is_BST_2_helper(root)[0]
 
 a = random_tree()
 num_of_left_node(a)
@@ -200,5 +220,7 @@ num_of_right_node(a)
 # in_order_iter(a)
 # post_order_traverse(a)
 # post_order_iter(a)
-# traverse_by_level(a)
+traverse_by_level(a)
 # print(longest_consec(a, None, 0))
+print(is_BST_1(a))
+print(is_BST_2(a))
