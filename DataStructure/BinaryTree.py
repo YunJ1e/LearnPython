@@ -17,8 +17,8 @@ def random_tree():
 	root.left.left = _TreeNode(2)
 	root.left.right = _TreeNode(7)
 	# root.left.right.left = _TreeNode(999)
-	# root.right.left = _TreeNode(12)
-	# root.right.right = _TreeNode(20)
+	root.right.left = _TreeNode(-12)
+	root.right.right = _TreeNode(-20)
 	return root
 
 def pre_order_iter(root):
@@ -249,6 +249,64 @@ def max_path_sum_to_target_leaf_to_root(root, curr_sum, target):
 	return max_path_sum_to_target_leaf_to_root(root.left, curr_sum + root.value, target) \
 		or max_path_sum_to_target_leaf_to_root(root.right, curr_sum + root.value, target)
 
+def max_path_node_to_node_helper(root, max_for_now):
+	global res
+	if not root:
+		return
+	if max_for_now < 0:
+		max_for_now = root.value
+	else:
+		max_for_now += root.value
+	res = max(max_for_now, res)
+
+	max_path_node_to_node_helper(root.left, max_for_now)
+	max_path_node_to_node_helper(root.right, max_for_now)
+
+def max_path_node_to_node(root):
+	global res
+	res = root.value
+	max_path_node_to_node_helper(root, 0)
+	print(res)
+
+def max_path_sum_leaf_to_leaf_helper(root):
+	global res
+	max_path_sum_leaf_to_leaf(root)
+	print(res)
+
+def max_path_sum_leaf_to_leaf(root):
+	global res
+	if not root:
+		return 0
+	if not root.left and not root.right:
+		return root.value
+
+	left = max_path_sum_leaf_to_leaf(root.left)
+	right = max_path_sum_leaf_to_leaf(root.right)
+
+	if root.left and root.right:
+		res = max(res, left + right + root.value)
+		return max(left, right) + root.value
+	else:
+		return root.value + right if root.left else root.value + left
+
+def max_path_sum_helper(root):
+	global res
+	if not root:
+		return 0
+	left = max_path_sum_helper(root.left)
+	right = max_path_sum_helper(root.right)
+
+	left = 0 if left < 0 else left
+	right = 0 if right < 0 else right
+
+	res = max(res, left + right + root.value)
+	return max(left, right, 0) + root.value
+
+def max_path_sum(root):
+	global res
+	max_path_sum_helper(root)
+	print(res)
+
 a = random_tree()
 num_of_left_node(a)
 num_of_right_node(a)
@@ -265,3 +323,7 @@ print(is_BST_1(a))
 print(is_BST_2(a))
 print(get_min_depth_helper(a))
 print(max_path_sum_to_target_leaf_to_root(a, 0, 20))
+max_path_node_to_node(a)
+max_path_sum_leaf_to_leaf_helper(a)
+res = 0
+max_path_sum(a)
