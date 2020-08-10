@@ -1,5 +1,5 @@
 """
-Updated: 2020/08/09
+Updated: 2020/08/10
 Author: Yunjie Wang
 """
 class _TreeNode(object):
@@ -16,7 +16,7 @@ def random_tree():
 	root.right = _TreeNode(15)
 	root.left.left = _TreeNode(2)
 	root.left.right = _TreeNode(7)
-	# root.left.right.left = _TreeNode(999)
+	root.left.right.left = _TreeNode(999)
 	root.right.left = _TreeNode(-12)
 	root.right.right = _TreeNode(-20)
 	return root
@@ -115,6 +115,23 @@ def get_tree_height(curr):
 		return 0
 	return 1 + max(get_tree_height(curr.left), get_tree_height(curr.right))
 
+def get_max_depth_helper(root):
+	if not root:
+		return -float("inf")
+	if not root.left and not root.right:
+		return 1
+
+	left = get_max_depth_helper(root.left)
+	right = get_max_depth_helper(root.right)
+
+	return max(left, right) + 1
+
+def get_max_depth(root):
+	# This is for the case that the root is None
+	if not root:
+		return 0
+	return get_max_depth_helper(root)
+
 def get_min_depth_helper(root):
 	if not root:
 		return float("inf")
@@ -122,7 +139,7 @@ def get_min_depth_helper(root):
 		return 1
 
 	left = get_min_depth_helper(root.left)
-	right = get_tree_height(root.right)
+	right = get_min_depth_helper(root.right)
 
 	return min(left, right) + 1
 
@@ -322,6 +339,7 @@ traverse_by_level(a)
 print(is_BST_1(a))
 print(is_BST_2(a))
 print(get_min_depth_helper(a))
+print(get_max_depth_helper(a))
 print(max_path_sum_to_target_leaf_to_root(a, 0, 20))
 max_path_node_to_node(a)
 max_path_sum_leaf_to_leaf_helper(a)
