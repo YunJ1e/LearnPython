@@ -207,7 +207,31 @@ class ValidParentheses(object):
 
 	def parentheses_call(self):
 		valid_pair = []
-		self.parentheses_bt(valid_pair)
+		if random.randint(0, 1):
+			self.parentheses_bt(valid_pair)
+		else:
+			print("Optimized")
+			self.optimized_parentheses_bt(valid_pair, 0, 0)
+
+	def optimized_parentheses_bt(self, valid_pair, left, right):
+		"""
+		The function generates valid parentheses with the help of the backtracking
+		And also reduce time complexity on checking the balance of them using extra variables
+		:param valid_pair:
+		:return:
+		"""
+		if len(valid_pair) == 2 * self.num_of_pairs:
+			self.valid_pairs.append(valid_pair[:])
+		if left < self.num_of_pairs:
+			# There are ('s left to use
+			valid_pair.append("(")
+			self.optimized_parentheses_bt(valid_pair, left + 1, right)
+			valid_pair.pop()
+
+		if left > right:
+			valid_pair.append(")")
+			self.optimized_parentheses_bt(valid_pair, left, right + 1)
+			valid_pair.pop()
 
 	def parentheses_bt(self, valid_pair):
 		if len(valid_pair) == 2 * self.num_of_pairs:
@@ -222,7 +246,6 @@ class ValidParentheses(object):
 			valid_pair.append(")")
 			self.parentheses_bt(valid_pair)
 			valid_pair.pop()
-
 
 	def is_left_parentheses_unmatched(self, sequence):
 		"""
