@@ -92,12 +92,14 @@ class Permutation(object):
 	The class provides permutation algorithms for different cases with the help of the backtracking
 	"""
 	def __init__(self):
-		self.nums = ["a", "c", "b", "d"]
+		self.nums = ["a", "c", "c", "c"]
 		self.perms = []
 
 	def distinct_bt(self, partial_perm):
 		"""
 		The function starts the recursion for the backtracking
+		This one only deals with the case where the nums contains no duplicate numbers, because once there are duplicate
+		numbers the base case condition will not match
 		:param partial_perm: The permutation that is partially filled
 		:return:
 		"""
@@ -119,7 +121,7 @@ class Permutation(object):
 		So, in order to further decrease the complexity, I just use the original list swapping to get
 		the ideal result.
 		Besides I need a extra variable to track the stage of swap
-		:param partial_perm: The permutation that is partially filled
+		:param stage: A extra variable to track the stage of swap
 		:return:
 		"""
 		if stage == len(self.nums):
@@ -131,13 +133,62 @@ class Permutation(object):
 			self.nums[i], self.nums[stage] = self.nums[stage], self.nums[i]
 		return
 
+	def possible_duplicate_bt(self, partial_perm):
+		"""
+		The function starts the recursion for the backtracking
+		This one is able to deals with the case where the nums contains duplicate numbers
+		At each level, the duplicate number cannot be used more than once, which can be achieved by the SET
+		But in the final perm, it still is a part of the permutation
+		:param partial_perm: The permutation that is partially filled
+		:return:
+		"""
+		if len(partial_perm) == len(self.nums):
+			self.perms.append(partial_perm[:])
+			return
+		unique_set = set()
+		for num in self.nums:
+			# The second condition allows duplicate numbers even they have already been in the permutation
+			# But the third condition is to prevent duplicate nums in the same level
+			if (num not in partial_perm or partial_perm.count(num) < self.nums.count(num)) and num not in unique_set:
+				# To avoid the repetition of a number
+				unique_set.add(num)
+				partial_perm.append(num)
+				self.possible_duplicate_bt(partial_perm)
+				partial_perm.pop()
+		return
+
+	def optimized_possible_duplicate_bt(self, stage):
+		"""
+		The function starts the recursion for the backtracking
+		Previous one has a extra search complexity when checking whether the num is used before
+		So, in order to further decrease the complexity, I just use the original list swapping to get
+		the ideal result.
+		Besides I need a extra variable to track the stage of swap
+		Also compared with the non-duplicate one, a unique set is needed for the
+		:param stage: A extra variable to track the stage of swap
+		:return:
+		"""
+		if stage == len(self.nums):
+			self.perms.append(self.nums[:])
+			return
+		unique_set = set()
+		for i in range(stage, len(self.nums)):
+			if self.nums[i] not in unique_set:
+				unique_set.add(self.nums[i])
+				self.nums[i], self.nums[stage] = self.nums[stage], self.nums[i]
+				self.optimized_possible_duplicate_bt(stage + 1)
+				self.nums[i], self.nums[stage] = self.nums[stage], self.nums[i]
+		return
+
 	def perm_call(self):
 		perm = []
-		if random.randint(0, 1):
-			self.distinct_bt(perm)
-		else:
-			print("Optimized")
-			self.optimized_distinct_bt(0)
+		self.possible_duplicate_bt(perm)
+		# self.optimized_possible_duplicate_bt(0)
+		# if random.randint(0, 1):
+		# 	self.distinct_bt(perm)
+		# else:
+		# 	print("Optimized")
+		# 	self.optimized_distinct_bt(0)
 
 	def __str__(self):
 		res = "There are {0} permutations for the number list [{1}]\n".format(len(self.perms), ", ".join(self.nums))
@@ -157,7 +208,7 @@ class Subset(object):
 	The class provides algorithms for generating possible subsets with the help of the backtracking
 	"""
 	def __init__(self):
-		self.nums = ["a", "b", "c", "d"]
+		self.nums = ["a", "b", "b"]
 		self.subsets = []
 
 	def subset_call(self):
@@ -175,17 +226,23 @@ class Subset(object):
 		if stage == len(self.nums):
 			self.subsets.append(subset[:])
 			return
-		# Not choose
-		self.subset_bt(subset, stage + 1)
+
 		# Choose
 		subset.append(self.nums[stage])
 		self.subset_bt(subset, stage + 1)
 		subset.pop()
+		next = stage + 1
+		while next < len(self.nums) and self.nums[next] == self.nums[stage]:
+			stage = next
+			next = stage + 1
+		# Not choose
+		self.subset_bt(subset, stage + 1)
+
 		return
 
 	def __str__(self):
 		res = "There are {0} permutations for the list [{1}]\n".format(len(self.subsets), ", ".join(self.nums))
-		res += "-"*20
+		res += "-"*len(res[:])
 		for subset in self.subsets:
 			res += "\n"
 			res += ", ".join(subset)
@@ -218,6 +275,8 @@ class ValidParentheses(object):
 		The function generates valid parentheses with the help of the backtracking
 		And also reduce time complexity on checking the balance of them using extra variables
 		:param valid_pair:
+		:param left:
+		:param right:
 		:return:
 		"""
 		if len(valid_pair) == 2 * self.num_of_pairs:
@@ -270,6 +329,93 @@ class ValidParentheses(object):
 		return res
 
 
-a = ValidParentheses()
-a.parentheses_call()
-print(a)
+# a = ValidParentheses()
+# a.parentheses_call()
+# print(a)
+
+
+class Combination(object):
+	"""
+	The class provides several functions for different cases of combination
+	"""
+	def __init__(self):
+		"""
+		Here we assume the k is less than the length of the nums
+		"""
+		self.nums = ["a", "b", "c", "d", "e"]
+		self.k = 2
+		self.ans = []
+
+	def combine(self):
+		"""
+		The function initializes conditions for backtracking
+		:return:
+		"""
+		comb = []
+		stage = 0
+		count = 0
+		self.combine_bt(comb, stage, count)
+
+	def combine_bt(self, comb, stage, count):
+		"""
+		Backtrack function, once the stage reaches the k, the current comb will be joined as string and put into ans
+		:param comb:
+		:param stage:
+		:return:
+		"""
+		if stage == self.k:
+			self.ans.append("".join(comb))
+			return
+
+		for i in range(stage + count, len(self.nums)):
+			comb.append(self.nums[i])
+
+			self.combine_bt(comb, stage + 1, count)
+			count += 1
+			comb.pop()
+
+	def __str__(self):
+		res = "There are {0} valid combinations choosing {1} numbers from [{2}] \n".format(len(self.ans), self.k, ", ".join(self.nums))
+		res += "-"*20
+		for pair in self.ans:
+			res += "\n"
+			res += pair
+		return res
+
+
+# a = Combination()
+# a.combine()
+# print(a)
+
+
+class Coins(object):
+	"""
+	The class includes functions that solves the "combinations of coins" problem
+	"""
+	def __init__(self):
+		self.target = 4
+		self.coins_options = [2, 1]
+		self.result = []
+
+	def coins_combination(self):
+		comb = []
+		self.coin_comb_bt(comb, self.target, 0)
+		print(self.result)
+
+	def coin_comb_bt(self, comb, target, coin_index):
+		if len(comb) == len(self.coins_options):
+			if target == 0:
+				self.result.append(comb[:])
+			return
+
+		for i in range(target // self.coins_options[coin_index] + 1):
+			comb.append(i)
+			self.coin_comb_bt(comb, target - i * self.coins_options[coin_index], coin_index + 1)
+			comb.pop()
+
+
+
+
+a = Coins()
+a.coins_combination()
+# print(a)
