@@ -414,8 +414,34 @@ class Coins(object):
 			comb.pop()
 
 
-
-
-a = Coins()
-a.coins_combination()
+# a = Coins()
+# a.coins_combination()
 # print(a)
+
+
+class Factorization(object):
+	"""
+		The class includes functions that solves the "factorizations of a number" problem
+		"""
+	def __init__(self):
+		self.target = 24
+		self.result = []
+
+	def factorize(self):
+		comb = []
+		self.factorize_bt(comb, self.target)
+		print(self.result)
+
+	def factorize_bt(self, comb, num):
+		if num == 1 and len(comb) > 1:
+			self.result.append(comb[:])
+			return
+
+		for divisor in range(2 if not comb else comb[-1], num + 1):
+			if num % divisor == 0:
+				comb.append(divisor)
+				self.factorize_bt(comb, num // divisor)
+				comb.pop()
+
+a = Factorization()
+a.factorize()
