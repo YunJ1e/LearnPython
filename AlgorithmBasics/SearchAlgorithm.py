@@ -6,15 +6,9 @@ import math
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 import random
+
 """
-Binary Search
-1. Find target number in a sorted integer array
-	* Assume the number is in the list for sure
-2. Find an element in the array that is closet to the target number
-	* The problem is slightly different, because we cannot automatically
-	move mid to right or left by 1(mid could be the answer in this case)
-	* The actual problem is to find the interval that surround the target
-	number, the boundary could be the target number
+Binary Search As a Class
 """
 
 
@@ -36,13 +30,14 @@ class BinarySearch(object):
 
 	def classic_binary_search(self):
 		"""
-		The function calls the inner function performing classic binary research
+		The function calls the inner function performing classic binary search
 		And it will set the result(string) based on the return of the inner function
 
 		:return: None
 		"""
 		self.result = "NOT FOUND"
 		res = self._classic_binary_search()
+		self.oper = "Classic Binary Search"
 		if res != -1:
 			self.result = str(res)
 
@@ -50,27 +45,268 @@ class BinarySearch(object):
 		"""
 		The function performs binary searching on the input list for the target
 		\nGoal: Find a number in a sorted list
-		\nKey Observation:
+		\nTime Complexity: log2(N) N: the length of the number list
 
 		:return: position index if the target is found, -1 otherwise
 		"""
+		if not self.sorted_list:  # Make sure the list is not None and the length of it is not zero
+			return -1
+		# Set up the initial condition for the left and right
+		left = 0
+		right = len(self.sorted_list) - 1
+		# Compare and change the left or right in the while loop
+		# As the comparison goes along, the left
+		while left <= right:
+			mid = (left + right) // 2
+			if self.sorted_list[mid] < self.target:
+				# If the number on the mid-point is less than the target
+				# It means that what we looking for is on the right side of the mid-point
+				# So, we need to change the left to the (mid-point + 1) in order to make the range shorter
+				left = mid + 1
+			elif self.sorted_list[mid] > self.target:
+				# If the number on the mid-point is larger than the target
+				# It means that what we looking for is on the left side of the mid-point
+				# So, we need to change the left to the (mid-point - 1) in order to make the range shorter
+				right = mid - 1
+			else:
+				# If the program ends up here, it means that the target number is found, and will return the index of target
+				return mid
+		return -1
+
+	def classic_binary_search_in_2d(self):
+		"""
+		The function calls the inner function performing classic binary search on 2d matrix
+		And it will set the result(string) based on the return of the inner function
+
+		:return: None
+		"""
+		self.result = "NOT FOUND"
+		res = self._classic_binary_search_in_2d()
+		self.oper = "Classic Binary Search in 2D"
+		if res != -1:
+			self.result = str(res)
+
+	def _classic_binary_search_in_2d(self):
+		"""
+		The function performs binary searching on the input list for the target
+		\nGoal: Find a number in a sorted 2-D matrix
+		\nTime Complexity: log2(N * M) M(N): The number of row(column) in this matrix
+
+		:return: position index tuple if the target is found, -1 otherwise
+		"""
+		if not self.sorted_list:  # Make sure the list is not None and the length of it is not zero
+			return -1
+		# Set up the initial condition for the left and right
+		row_number, col_number = len(self.sorted_list), len(self.sorted_list[0])
+		left = 0
+		right = row_number * col_number - 1
+		while left <= right:
+			mid = (left + right) // 2
+			# Transfer the mid-point into the actual row and column index in the problem
+			mid_row = mid // col_number
+			mid_col = mid % col_number
+			if self.sorted_list[mid_row][mid_col] > self.target:
+				right = mid - 1
+			elif self.sorted_list[mid_row][mid_col] < self.target:
+				left = mid + 1
+			else:
+				return mid_row, mid_col
+		return -1
+
+	def binary_search_closet(self):
+		"""
+		The function calls the inner function performing binary search for the number closet to the target
+		And it will set the result(string) based on the return of the inner function
+
+		:return: None
+		"""
+		self.result = "NOT FOUND"
+		res = self._binary_search_closet()
+		self.oper = "Binary Search Number that is Closest to the Target"
+		if res != -1:
+			self.result = str(res)
+
+	def _binary_search_closet(self):
+		"""
+		The function performs binary searching on the input list for the target, if not found, find the closest number to target
+		\nGoal: Find a number in a sorted list
+		\nTime Complexity: log2(N) N: the length of the number list
+
+		:return: position index of the number that is closest to the target
+		"""
+		if not self.sorted_list:  # Make sure the list is not None and the length of it is not zero
+			return -1
+		# Set up the initial condition for the left and right
+		left = 0
+		right = len(self.sorted_list) - 1
+		# Compare and change the left or right in the while loop
+		# Since the program will return an index anyway, there are several differences for this purpose
+		# The final result will end up with two numbers if the target number is not in the list
+		# So the while loop condition cannot be the same otherwise it will cause some dead loops
+		while left < right - 1:
+			mid = (left + right) // 2
+			if self.sorted_list[mid] < self.target:
+				# If the number on the mid-point is less than the target
+				# It means that what we looking for is on the right side of the mid-point
+				# But the current mid-point could be the final answer
+				# So, we need to change the left to the (mid-point) in order to make the range shorter
+				left = mid
+			elif self.sorted_list[mid] > self.target:
+				# If the number on the mid-point is larger than the target
+				# It means that what we looking for is on the left side of the mid-point
+				# But the current mid-point could be the final answer
+				# So, we need to change the left to the (mid-point) in order to make the range shorter
+				right = mid
+			else:
+				# If the program ends up here, it means that the target number is found, and will return the index of target
+				return mid
+		# Right now, we are having left and right, and it is obvious that the target number is not in the list
+		# Then, we need to find the number that is closest to the target number, and return the index
+		# By default, the program will return the smaller one if both numbers are equally close to the target number
+		return left if abs(self.sorted_list[left] - self.target) <= abs(self.sorted_list[right] - self.target) else right
+
+	def search_target_first_occurrence(self):
+		"""
+		The function calls the inner function performing classic binary search
+		And it will set the result(string) based on the return of the inner function
+
+		:return: None
+		"""
+		self.result = "NOT FOUND"
+		res = self._search_target_first_occurrence()
+		self.oper = "Classic Binary Search for the First Occurrence of Target"
+		if res != -1:
+			self.result = str(res)
+
+	def _search_target_first_occurrence(self):
+		"""
+		The function performs binary searching on the input list for the target
+		\nGoal: Find the first occurrence of a number in a sorted list
+		\nTime Complexity: log2(N) N: the length of the number list
+
+		:return: position index if the target is found, -1 otherwise
+		"""
+		if not self.sorted_list:  # Make sure the list is not None and the length of it is not zero
+			return -1
+		# Set up the initial condition for the left and right
+		left = 0
+		right = len(self.sorted_list) - 1
+		# Compare and change the left or right in the while loop
+		# Since the program will return an index anyway, there are several differences for this purpose
+		# The final result will end up with two numbers if the target number is not in the list
+		# So the while loop condition cannot be the same otherwise it will cause some dead loops
+		while left < right - 1:
+			mid = (left + right) // 2
+			if self.sorted_list[mid] < self.target:
+				# If the number on the mid-point is less than the target
+				# It means that what we looking for is on the right side of the mid-point
+				# But the current mid-point could be the final answer
+				# So, we need to change the left to the (mid-point) in order to make the range shorter
+				left = mid
+			elif self.sorted_list[mid] > self.target:
+				# If the number on the mid-point is larger than the target
+				# It means that what we looking for is on the left side of the mid-point
+				# But the current mid-point could be the final answer
+				# So, we need to change the left to the (mid-point) in order to make the range shorter
+				right = mid
+			else:
+				# If the program ends up here, it means that the target number is found, but it is not necessarily
+				# the result we want. However, any numbers that are at the right of this index will be ignored though
+				# target number might appear in that range(NOT THE FIRST OCCURRENCE)
+				right = mid
+		# Right now, we have left and right of the range we need. Since we are looking for the first occurrence of the
+		# target number, we first check the left, then right
+		if self.sorted_list[left] == self.target:
+			return left
+		if self.sorted_list[right] == self.target:
+			return right
+		return -1
+
+	def search_target_last_occurrence(self):
+		"""
+		The function calls the inner function performing classic binary search
+		And it will set the result(string) based on the return of the inner function
+
+		:return: None
+		"""
+		self.result = "NOT FOUND"
+		res = self._search_target_last_occurrence()
+		self.oper = "Classic Binary Search for the Last Occurrence of Target"
+		if res != -1:
+			self.result = str(res)
+
+	def _search_target_last_occurrence(self):
+		"""
+		The function performs binary searching on the input list for the target
+		\nGoal: Find the last occurrence of a number in a sorted list
+		\nTime Complexity: log2(N) N: the length of the number list
+
+		:return: position index if the target is found, -1 otherwise
+		"""
+		if not self.sorted_list:  # Make sure the list is not None and the length of it is not zero
+			return -1
+		# Set up the initial condition for the left and right
+		left = 0
+		right = len(self.sorted_list) - 1
+		# Compare and change the left or right in the while loop
+		# Since the program will return an index anyway, there are several differences for this purpose
+		# The final result will end up with two numbers if the target number is not in the list
+		# So the while loop condition cannot be the same otherwise it will cause some dead loops
+		while left < right - 1:
+			mid = (left + right) // 2
+			if self.sorted_list[mid] < self.target:
+				# If the number on the mid-point is less than the target
+				# It means that what we looking for is on the right side of the mid-point
+				# But the current mid-point could be the final answer
+				# So, we need to change the left to the (mid-point) in order to make the range shorter
+				left = mid
+			elif self.sorted_list[mid] > self.target:
+				# If the number on the mid-point is larger than the target
+				# It means that what we looking for is on the left side of the mid-point
+				# But the current mid-point could be the final answer
+				# So, we need to change the left to the (mid-point) in order to make the range shorter
+				right = mid
+			else:
+				# If the program ends up here, it means that the target number is found, but it is not necessarily
+				# the result we want. However, any numbers that are at the left of this index will be ignored though
+				# target number might appear in that range(NOT THE LAST OCCURRENCE)
+				left = mid
+		# Right now, we have left and right of the range we need. Since we are looking for the first occurrence of the
+		# target number, we first check the left, then right
+		if self.sorted_list[right] == self.target:
+			return right
+		if self.sorted_list[left] == self.target:
+			return left
+		return -1
+
+	def __str__(self):
+		res = "---{0}---\n".format(self.oper)
+		res += "Input List: {0}\n".format(str(self.sorted_list))
+		res += "Target: {0}\n".format(str(self.target))
+		res += "Result: {0}\n".format(str(self.result))
+		return res
 
 
+"""
+Binary Search Class Test
+"""
+a = BinarySearch([1,2,2,2,7,8], 9)
+a.search_target_first_occurrence()
+print(a)
+a.search_target_last_occurrence()
+print(a)
 
 
-
-
-
-
-
-
-
-
-
+"""
+Below is the first attempt implementing binary search algorithm with the plotting
+I have commented the last few lines. Feel free to try if you want to see the dynamic plotting of the 
+binary search process
+"""
 def plot_pause_erase(fig_obj):
 	fig_obj.show()
 	plt.pause(2)
 	plt.clf()
+
 
 def set_xylimit(axis_plot, list_length, list_max, list_min, ratio=1.1):
 
@@ -86,19 +322,24 @@ def set_xylimit(axis_plot, list_length, list_max, list_min, ratio=1.1):
 	# print(upper_bound, lower_bound)
 	plt.ylim([lower_bound, upper_bound])
 
+
 def erase_one_point_from_list(list_to_erase, index):
 	list_to_erase[index] = 0
 
+
 def prepare_one_point_plot(list_to_prepare, list_to_copy, index):
 	list_to_prepare[index] = list_to_copy[index]
+
 
 def erase_lr_on_baselist(left_index, right_index, base_list):
 	erase_one_point_from_list(base_list, left_index)
 	erase_one_point_from_list(base_list, right_index)
 
+
 def prepare_lr_plotlist(left_index, right_index, lr_list, orginal_list):
 	prepare_one_point_plot(lr_list, orginal_list, left_index)
 	prepare_one_point_plot(lr_list, orginal_list, right_index)
+
 
 def binarySearch(numList, target):
 	# For plot purpose
@@ -203,6 +444,7 @@ def binarySearch(numList, target):
 	plot_pause_erase(fig)
 	return None
 
+
 def binary_search_closet_number(numList, target):
 	# If the number list is empty, return None representing (NOT FOUND)
 	if not numList:
@@ -225,6 +467,7 @@ def binary_search_closet_number(numList, target):
 			return mid
 	# Even the one last number is not the number we want, the target must not be in the number list
 	return left if(abs(numList[left]-target) <= abs(numList[right]-target)) else right
+
 
 def binary_search_last_occurence(numList, target):
 	# If the number list is empty, return None representing (NOT FOUND)
@@ -253,6 +496,7 @@ def binary_search_last_occurence(numList, target):
 
 	return None
 
+
 def binary_search_first_occurence(numList, target):
 	# If the number list is empty, return None representing (NOT FOUND)
 	if not numList:
@@ -280,10 +524,12 @@ def binary_search_first_occurence(numList, target):
 
 	return None
 
+
 def my_custom_random():
 	exclude=[0]
 	randInt = random.randrange(-100,100)
 	return my_custom_random() if randInt in exclude else randInt
+
 
 def merge_two_lists(list1, list2):
 	"""
@@ -310,6 +556,7 @@ def merge_two_lists(list1, list2):
 		j += 1
 	return new_list
 
+
 def merge_sort(list_to_sort):
 	if len(list_to_sort) == 0 or len(list_to_sort) == 1:
 		return list_to_sort
@@ -317,6 +564,7 @@ def merge_sort(list_to_sort):
 	left = merge_sort(list_to_sort[:mid])
 	right = merge_sort(list_to_sort[mid:])
 	return merge_two_lists(left, right)
+
 
 def partition(alist, start, end, pivot_index):
 	# In this list, every element before the pivot_index is less than the number on it,
@@ -332,6 +580,7 @@ def partition(alist, start, end, pivot_index):
 	alist[small_index], alist[end] = alist[end], alist[small_index]
 	return small_index
 
+
 def quick_sort_helper(alist, start, end):
 	if start >= end:
 		return
@@ -339,6 +588,7 @@ def quick_sort_helper(alist, start, end):
 	pivot_index = partition(alist, start, end, random_num)
 	quick_sort_helper(alist, start, pivot_index - 1)
 	quick_sort_helper(alist, pivot_index + 1, end)
+
 
 def quick_sort(list_to_sort):
 	quick_sort_helper(list_to_sort, 0, len(list_to_sort) - 1)
