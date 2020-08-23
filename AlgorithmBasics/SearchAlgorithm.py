@@ -1,5 +1,5 @@
 """
-Updated: 2020/07/17
+Updated: 2020/08/22
 Author: Yunjie Wang
 """
 import math
@@ -16,6 +16,56 @@ Binary Search
 	* The actual problem is to find the interval that surround the target
 	number, the boundary could be the target number
 """
+
+
+class BinarySearch(object):
+	"""
+	The class provides several functions based on the idea of the binary search.
+	In the initialization, users need to provide a SORTED list and a target.
+	Every function under this class is based on the assumption of the sorted list input also a valid target input
+	"""
+	def __init__(self, sorted_list, target):
+		self.sorted_list = sorted_list
+		self.target = target
+		# At the beginning of the certain function, it will be set to "NOT FOUND"
+		# The result will be a number string if the actual function returns the position index
+		# If the function fails to find the target, it will remain "NOT FOUND"
+		self.result = None
+		# The oper variable represent the actual function in use
+		self.oper = None
+
+	def classic_binary_search(self):
+		"""
+		The function calls the inner function performing classic binary research
+		And it will set the result(string) based on the return of the inner function
+
+		:return: None
+		"""
+		self.result = "NOT FOUND"
+		res = self._classic_binary_search()
+		if res != -1:
+			self.result = str(res)
+
+	def _classic_binary_search(self):
+		"""
+		The function performs binary searching on the input list for the target
+		\nGoal: Find a number in a sorted list
+		\nKey Observation:
+
+		:return: position index if the target is found, -1 otherwise
+		"""
+
+
+
+
+
+
+
+
+
+
+
+
 
 def plot_pause_erase(fig_obj):
 	fig_obj.show()
