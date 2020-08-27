@@ -5,7 +5,14 @@ Author: Yunjie Wang
 
 import SearchAlgorithm
 
+
 def bubble_sort(list_to_sort):
+	"""
+	The function sorts the list in the ascending order
+
+	:param list_to_sort:
+	:return: None
+	"""
 	if not list_to_sort or len(list_to_sort) == 0:
 		return
 	# For Special case, len = 1, the outer for loop will not be execute
@@ -16,6 +23,7 @@ def bubble_sort(list_to_sort):
 				list_to_sort[i], list_to_sort[i + 1] = list_to_sort[i + 1], list_to_sort[i]
 	# print(list_to_sort)
 	return
+
 
 def bubble_sort_reversed(list_to_sort):
 	if not list_to_sort or len(list_to_sort) == 0:
@@ -29,6 +37,7 @@ def bubble_sort_reversed(list_to_sort):
 	# print(list_to_sort)
 	return
 
+
 def selection_sort(list_to_sort):
 	if not list_to_sort or len(list_to_sort) == 0:
 		return
@@ -41,6 +50,7 @@ def selection_sort(list_to_sort):
 	# print(list_to_sort)
 	return
 
+
 def selection_sort_reversed(list_to_sort):
 	if not list_to_sort or len(list_to_sort) == 0:
 		return
@@ -52,6 +62,7 @@ def selection_sort_reversed(list_to_sort):
 		list_to_sort[min_index], list_to_sort[j] = list_to_sort[j], list_to_sort[min_index]
 	# print(list_to_sort)
 	return
+
 
 def insert_sorted(original_list, element_to_insert):
 	# The input of the original_list has to be a list
@@ -66,11 +77,13 @@ def insert_sorted(original_list, element_to_insert):
 			original_list[i-1], original_list[i] = original_list[i], original_list[i-1]
 	return
 
+
 def insertion_sort(list_to_sort):
 	new_list = []
 	for i in range(len(list_to_sort)):
 		insert_sorted(new_list, list_to_sort[i])
 	return new_list
+
 
 def insertion_sort_in_place(list_to_sort):
 	# For zero-or-one-element list, the for loop will not be executed
@@ -85,6 +98,7 @@ def insertion_sort_in_place(list_to_sort):
 			k -= 1
 		# The while loop is out, the proper position is found
 		list_to_sort[k] = current_value
+
 
 def search_and_insertion(list_to_insert, num_insert):
 	# Assume the list_to_insert is a sorted list
@@ -107,6 +121,7 @@ def search_and_insertion(list_to_insert, num_insert):
 		idx -= 1
 	list_to_insert[insert_postion] = num_insert
 
+
 def binary_search_help_insertion(list_to_sort):
 	new_list = []
 	for i in range(len(list_to_sort)):
@@ -114,3 +129,4 @@ def binary_search_help_insertion(list_to_sort):
 		search_and_insertion(new_list, list_to_sort[i])
 	print(new_list)
 	return new_list
+
