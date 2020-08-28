@@ -145,44 +145,81 @@ def insertion_sort(list_to_sort):
 	return new_list
 
 
-def insertion_sort_in_place(list_to_sort):
-	# For zero-or-one-element list, the for loop will not be executed
+def insertion_sort_v1(list_to_sort):
+	"""
+	The functions sorts the list in the ascending order.
+	\nKey Ideas:
+	\n1. Start from the second number and compare with the first number, and swap if needed
+	\n2. Iterate the list from front to back, keep the record of its index and value and compare it with the numbers
+	after it, move every number that is smaller than it forward by one.
+	\n3. Set the number to the proper position
+	\nTime Complexity: O(n^2) n + (n - 1) + ... + 1 = n(n + 1)/2
+	\nSpace Complexity: O(1) - The main advantage
+
+	:param list_to_sort:
+	:return:
+	"""
+	# It acts like insert the i-th element to the list containing the elements before it
 	for i in range(1, len(list_to_sort)):
-		current_value = list_to_sort[i]
-		k = i
-		# For one-element list, the while loop will not be executed
-		while k > 0 and (current_value < list_to_sort[k-1]):
-			# Move the previous element to the current index(k)
-			# in order to arrange a space(k-1) for the insertion
-			list_to_sort[k] = list_to_sort[k-1]
-			k -= 1
-		# The while loop is out, the proper position is found
-		list_to_sort[k] = current_value
+		# keep the record of the number on index i
+		temp_num = list_to_sort[i]
+		temp_index = i
+		# when the current number is less than the number before it, set the current to be the number before it
+		# and the loop cannot iterate out of the list, temp_index has to be at least one, because the loop need to access
+		# the number before a certain index
+		while temp_index > 0 and list_to_sort[temp_index - 1] > temp_num:
+			list_to_sort[temp_index] = list_to_sort[temp_index - 1]
+			temp_index -= 1
+		# Right now, the temp_index is the index we need to put the temp_num in
+		list_to_sort[temp_index] = temp_num
 
 
 def search_and_insertion(list_to_insert, num_insert):
-	# Assume the list_to_insert is a sorted list
-	insert_postion = SearchAlgorithm.binary_search_closet_number(list_to_insert, num_insert)
+	"""
+	The function insert an element to a sorted list
+	\nKey Ideas:
+	\n1. Use the search algorithm to find the closet element of the element you need to insert
+	\n2. The number on the index we found could be smaller or greater than the number to insert, + 1 on index might be needed
+	\n3. Insert the num at the end of the list, and move every number after the insert_position backward by 1
+	\nTime Complexity: O(log2(n) + n)
+	\nSpace Complexity: O(n)
 
-	# The value of the insert position could be less or greater than the num_insert
+	:param list_to_insert:
+	:param num_insert:
+	:return:
+	"""
 	# list_to_insert is empty at first
 	if len(list_to_insert) == 0:
 		list_to_insert.append(num_insert)
 		return
-	if list_to_insert[insert_postion] < num_insert:
-		insert_postion += 1
 
+	# Assume the list_to_insert is a sorted list
+	insert_position = SearchAlgorithm.binary_search_closet_number(list_to_insert, num_insert)
+
+	# The value of the insert position could be less or greater than the num_insert
+	if list_to_insert[insert_position] < num_insert:
+		insert_position += 1
+
+	# Get the length of the original list because the insert_position is based on the previous list
 	idx = len(list_to_insert)
 	list_to_insert.append(num_insert)
 
-	while idx > insert_postion:
-		# list_to_insert[idx], list_to_insert[idx-1] = list_to_insert[idx-1], list_to_insert[idx]
-		list_to_insert[idx]=list_to_insert[idx - 1] # Alternative
+	while idx > insert_position:
+		# The number on the idx is the new inserted element
+		list_to_insert[idx] = list_to_insert[idx - 1]
 		idx -= 1
-	list_to_insert[insert_postion] = num_insert
+	list_to_insert[insert_position] = num_insert
 
 
 def binary_search_help_insertion(list_to_sort):
+	"""
+	The functions sorts the list in the ascending order.
+	\nTime Complexity: O(n * (log2(n) + n))
+	\nSpace Complexity: O(n)
+
+	:param list_to_sort:
+	:return:
+	"""
 	new_list = []
 	for i in range(len(list_to_sort)):
 		print(new_list)
