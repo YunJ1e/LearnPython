@@ -290,11 +290,11 @@ class BinarySearch(object):
 """
 Binary Search Class Test
 """
-a = BinarySearch([1,2,2,2,7,8], 9)
-a.search_target_first_occurrence()
-print(a)
-a.search_target_last_occurrence()
-print(a)
+# a = BinarySearch([1,2,2,2,7,8], 9)
+# a.search_target_first_occurrence()
+# print(a)
+# a.search_target_last_occurrence()
+# print(a)
 
 
 """
