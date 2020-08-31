@@ -1,5 +1,5 @@
 """
-Updated: 2020/07/18
+Updated: 2020/08/30
 Author: Yunjie Wang
 """
 
@@ -23,6 +23,7 @@ class ListNode(object):
 	def __str__(self):
 		return "Node value: {}".format(self.value)
 
+
 def reverse_llist(head):
 	if not head:
 		return None
@@ -37,6 +38,7 @@ def reverse_llist(head):
 	current.next = pre
 	return current
 
+
 def llist_random_generator(list_length):
 	if list_length <= 0:
 		return
@@ -49,6 +51,7 @@ def llist_random_generator(list_length):
 		print(curr.value)
 	return fake_head.next
 
+
 def llist_based_on_list(list_to_covert):
 	if len(list_to_covert) == 0:
 		return None
@@ -60,42 +63,53 @@ def llist_based_on_list(list_to_covert):
 		curr = curr.next
 	return fake_head.next
 
+
 def traverse(node_to_print):
 	while node_to_print is not None:
 		print(node_to_print.value, end=" -> ")
 		node_to_print = node_to_print.next
 	print("None")
 
-def search_by_index(headNode, index_to_find):
+
+def search_by_index(head_node, index_to_find):
 	"""
-	:param: A singly linked list and an index(assume the index of the first node is 0)
-	:return: Returns the node I found, otherwise return None
+	The function search a node based on the index
+	\nKey Ideas:
+	\n1. Generally speaking, just need to iterate several times as the index suggests
+	\n2. It is possible to be out of index if the index is not valid
+	\n3. The head node itself might be None, then no need to proceed
+	\nTime Complexity: O(n)
+	\nSpace Complexity: O(1)
+
+	:param head_node:
+	:param index_to_find:
+	:return: The target node, else None
 	"""
-	if headNode is None or index_to_find < 0:
+	if not head_node or index_to_find < 0:
 		return None
-
 	for i in range(index_to_find):
-		if headNode.next is None:
-			# The linked list is out of index
+		head_node = head_node.next
+		if head_node is None:
 			return None
-		headNode = headNode.next
+	return head_node
 
-	return headNode
 
-def search_by_value(headNode, target):
+def search_by_value(head_node, target):
 	"""
-	:param headNode: A singly linked list and an index(assume the index of the first node is 0)
+	:param head_node: A singly linked list and an index(assume the index of the first node is 0)
 	:param target: A number to find
 	:return: A node if found, otherwise None
 	"""
-	if headNode is None:
+	if head_node is None:
 		return None
-	current_node = headNode
+	current_node = head_node
 	while current_node is not None:
 		if current_node.value == target:
 			return current_node
 		current_node = current_node.next
+	# At the end of the linked list, and none of the value matches the target
 	return None
+
 
 def add_to_index(headNode, index_to_add, value):
 	"""
@@ -116,6 +130,7 @@ def add_to_index(headNode, index_to_add, value):
 	new_node.next = insertion_pos.next
 	insertion_pos.next = new_node
 	return fake_head.next
+
 
 def add_to_index_v1(headNode, index_to_add, value):
 	"""
@@ -140,6 +155,7 @@ def add_to_index_v1(headNode, index_to_add, value):
 		pre_node.next = new_node
 		return headNode
 
+
 def remove_from_index(headNode, index_to_remove):
 	"""
 	:param headNode:
@@ -156,7 +172,9 @@ def remove_from_index(headNode, index_to_remove):
 	remove_pos.next = None
 	return fake_head.next
 
-a = llist_random_generator()
+
+a = llist_random_generator(5)
 traverse(a)
-b = reverse_llist(a)
-traverse(b)
+print(search_by_index(a, 4))
+# b = reverse_llist(a)
+# traverse(b)
